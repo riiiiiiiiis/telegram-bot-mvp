@@ -1,0 +1,17 @@
+# Telegram Bot Library
+python-telegram-bot[job-queue]==21.0.1
+
+# PostgreSQL Database Driver
+psycopg[binary]==3.1.18
+
+# HTTP Server for healthcheck (Railway)
+aiohttp==3.9.1
+
+# JSON handling (included in Python standard library, but listed for clarity)
+# json - built-in
+
+# Async support (included in Python 3.12+)
+# asyncio - built-in
+
+# Logging (included in Python standard library)
+# logging - built-in
