@@ -14,6 +14,7 @@ from typing import Optional
 from aiohttp import web, ClientSession
 
 import psycopg
+from psycopg_pool import AsyncConnectionPool
 from telegram import Update, User, Chat
 from telegram.ext import Application, MessageHandler, filters, ContextTypes
 
@@ -25,7 +26,7 @@ logging.basicConfig(
 logger = logging.getLogger(__name__)
 
 # Глобальный пул соединений к базе данных
-DB_POOL: Optional[psycopg.AsyncConnection] = None
+DB_POOL: Optional[AsyncConnectionPool] = None
 
 
 async def create_tables():
@@ -250,7 +251,7 @@ async def main():
     try:
         # Инициализация пула соединений к базе данных
         logger.info("Connecting to database...")
-        DB_POOL = psycopg.AsyncConnection.pool(
+        DB_POOL = AsyncConnectionPool(
             db_url,
             min_size=1,
             max_size=10,
