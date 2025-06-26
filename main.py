@@ -283,11 +283,26 @@ async def main():
         logger.info("Bot is starting with polling...")
         logger.info("Make sure Privacy Mode is disabled in @BotFather for this bot")
         
-        # Запускаем бота в режиме polling
-        await application.run_polling(
+        # Инициализируем приложение
+        await application.initialize()
+        await application.start()
+        
+        # Запускаем polling
+        await application.updater.start_polling(
             drop_pending_updates=True,
             allowed_updates=["message"]
         )
+        
+        # Ждем бесконечно (пока не будет прервано)
+        try:
+            await asyncio.Event().wait()
+        except (KeyboardInterrupt, SystemExit):
+            logger.info("Received shutdown signal")
+        finally:
+            # Корректно останавливаем бота
+            await application.updater.stop()
+            await application.stop()
+            await application.shutdown()
 
     except Exception as e:
         logger.critical(f"Failed to start bot: {e}")
